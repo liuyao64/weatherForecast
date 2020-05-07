@@ -1,0 +1,155 @@
+var weatherIcon = function(code) {
+	var src = ''
+	switch (code) {
+		case '晴':
+			src = '../../static/images/weatherIcon/sunny.png';
+			break;
+		case '多云':
+			src = '../../static/images/weatherIcon/more-cloud.png';
+			break;
+		case '阴':
+			src = '../../static/images/weatherIcon/overcast.png';
+			break;
+		case '小雨':
+			src = '../../static/images/weatherIcon/light-rain.png';
+			break;
+		case '中雨':
+			src = '../../static/images/weatherIcon/moderate-rain.png';
+			break;
+		case '大雨':
+			src = '../../static/images/weatherIcon/heavy-rain.png';
+			break;
+		case '小雪':
+			src = '../../static/images/weatherIcon/light-snow.png';
+			break;
+		case '中雪':
+			src = '../../static/images/weatherIcon/moderate-snow.png';
+			break;
+		case '大雪':
+			src = '../../static/images/weatherIcon/heavy-snow.png';
+			break;
+		case '雨夹雪':
+			src = '../../static/images/weatherIcon/rain-snow.png';
+			break;
+		case '雷阵雨':
+			src = '../../static/images/weatherIcon/thunder-shower.png';
+			break;
+		case '阵雨':
+			src = '../../static/images/weatherIcon/shower.png';
+			break;
+		case '雾':
+			src = '../../static/images/weatherIcon/fog.png';
+			break;
+	}
+	return src;
+}
+
+var lifestyleIcon = function(type) {
+	var obj = {
+		src: '',
+		name: ''
+	}
+	switch (type) {
+		case 'comf':
+			obj = {
+				src : '',
+				name : '舒适度'
+			};
+			break;
+		case 'cw':
+			obj = {
+				src : '',
+				name : '洗车'
+			};
+			break;
+		case 'drsg':
+			obj = {
+				src : '',
+				name : '穿衣'
+			};
+			break;
+		case 'flu':
+			obj = {
+				src : '',
+				name : '感冒'
+			};
+			break;
+		case 'sport':
+			obj = {
+				src : '',
+				name : '运动'
+			};
+			break;
+		case 'trav':
+			obj = {
+				src : '',
+				name : '旅游'
+			};
+			break;
+		case 'uv':
+			obj = {
+				src : '',
+				name : '紫外线'
+			};
+			break;
+		case 'air':
+			obj = {
+				src : '',
+				name : '空气'
+			};
+			break;
+		case 'ac':
+			obj = {
+				src : '',
+				name : '空调'
+			};
+			break;
+		case 'ag':
+			obj = {
+				src : '',
+				name : '过敏'
+			};
+			break;
+		case 'gl':
+			obj = {
+				src : '',
+				name : '太阳镜'
+			};
+			break;
+		case 'mu':
+			obj = {
+				src : '',
+				name : '化妆'
+			};
+			break;
+		case 'airc':
+			obj = {
+				src : '',
+				name : '晾晒'
+			};
+			break;
+		case 'ptfc':
+			obj = {
+				src : '',
+				name : '交通'
+			};
+			break;
+		case 'fsh':
+			obj = {
+				src : '',
+				name : '钓鱼'
+			};
+			break;
+		case 'spi':
+			obj = {
+				src : '',
+				name : '防晒'
+			};
+			break;
+	}
+	return obj;
+}
+module.exports = {
+	weatherIcon: weatherIcon,
+	lifestyleIcon:lifestyleIcon
+};

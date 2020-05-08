@@ -7619,9 +7619,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!*******************************************************!*\
-  !*** /Users/liuyao/other/my/weatherReport/pages.json ***!
-  \*******************************************************/
+/*!**************************************************************!*\
+  !*** /Users/liuyao/other/微信小程序:Vue/weatherReport/pages.json ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8525,25 +8525,25 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 
 /***/ }),
 /* 7 */
-/*!************************************************************************!*\
-  !*** /Users/liuyao/other/my/weatherReport/pages.json?{"type":"style"} ***!
-  \************************************************************************/
+/*!*******************************************************************************!*\
+  !*** /Users/liuyao/other/微信小程序:Vue/weatherReport/pages.json?{"type":"style"} ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "天气", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/city/city": { "navigationBarTitleText": "选择城市" } }, "globalStyle": { "navigationBarTitleText": "天气", "navigationBarTextStyle": "white", "navigationBarBackgroundColor": "#7dbbfa", "backgroundColor": "#FFFFFF" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "天气" }, "pages/city/city": { "navigationBarTitleText": "选择城市" } }, "globalStyle": { "navigationBarTitleText": "天气", "navigationBarTextStyle": "white", "navigationBarBackgroundColor": "#7dbbfa", "backgroundColor": "#FFFFFF" } };exports.default = _default;
 
 /***/ }),
 /* 8 */
-/*!***********************************************************************!*\
-  !*** /Users/liuyao/other/my/weatherReport/pages.json?{"type":"stat"} ***!
-  \***********************************************************************/
+/*!******************************************************************************!*\
+  !*** /Users/liuyao/other/微信小程序:Vue/weatherReport/pages.json?{"type":"stat"} ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "appid": "" };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "appid": "__UNI__B190901" };exports.default = _default;
 
 /***/ }),
 /* 9 */,

@@ -158,7 +158,6 @@
 						that.weatherInfo = res.data.HeWeather6[0]
 						
 						if(uni.getStorageSync('location')){
-							console.log(123,uni.getStorageSync('location'))
 							that.weatherInfo.basic.location = uni.getStorageSync('location')
 						}
 						uni.hideLoading()
@@ -226,7 +225,7 @@
 				    }
 				});
 			}
-		}
+		},
 	}
 </script>
 
@@ -272,7 +271,7 @@
 	.hourly-item {
 		display: inline-block;
 		text-align: center;
-		width: 150rpx;
+		width: 180rpx;
 		height: 160rpx;
 		padding: 20rpx 0;
 	}

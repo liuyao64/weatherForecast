@@ -32,7 +32,7 @@ input {
 .title {
 	color: #fff;
 	font-size: 30rpx;
-	margin: 30rpx 30rpx 10rpx 30rpx;
+	margin: 30rpx 30rpx 0rpx 30rpx;
 }
 .wrap {
 	overflow: hidden;
@@ -50,12 +50,14 @@ input {
 	margin-top: 20rpx;
 	background-color: rgba(0, 0, 0, 0.2);
 }
-.hot-city:nth-child(4n) {
+
+/*.hot-city:nth-child(4n) {
 	margin-right: 0;
 }
+
 .hot-city:nth-child(-n+4) {
 	margin-top: 0;
-}
+} */
 .search-title {
 	background-color: rgba(0, 0, 0, 0.2);
 	padding: 20rpx 30rpx;

@@ -11,7 +11,7 @@
 
 		<div class="title" v-if="!showSearch">热门城市</div>
 		<div class="wrap" v-if="!showSearch">
-			<div class="hot-city" v-for="item in hotCityArr">
+			<div class="hot-city" v-for="item in hotCityArr" @click="chooseHot(item)">
 				{{item.location==item.parent_city?item.location:item.location+'，'+item.parent_city}}
 			</div>
 		</div>
@@ -78,6 +78,15 @@
 					delta:1
 				})
 			},
+			chooseHot(item){
+				let that = this
+				let lngLat = item.lon +','+item.lat
+				uni.setStorageSync('lngLat',lngLat)
+				uni.setStorageSync('location',item.location)
+				uni.navigateBack({
+					delta:1
+				})
+			},
 			goBack() {
 				uni.navigateBack({
 					delta: 1
@@ -122,7 +131,7 @@
 	.title {
 		color: #fff;
 		font-size: 30rpx;
-		margin: 30rpx 30rpx 10rpx 30rpx;
+		margin: 30rpx 30rpx 0rpx 30rpx;
 	}
 
 	.wrap {
@@ -143,13 +152,13 @@
 		background-color: rgba(0, 0, 0, 0.2);
 	}
 
-	.hot-city:nth-child(4n) {
+	/*.hot-city:nth-child(4n) {
 		margin-right: 0;
 	}
 
 	.hot-city:nth-child(-n+4) {
 		margin-top: 0;
-	}
+	} */
 
 	.search-title {
 		background-color: rgba(0, 0, 0, 0.2);

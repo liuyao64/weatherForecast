@@ -5,5 +5,4 @@
 [和风天气](https://dev.heweather.com/docs/api/)
 
 ### 小程序码
-![小西瓜的天气预报](https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/
-u=702257389,1274025419&fm=27&gp=0.jpg "扫码预览")
+![小西瓜的天气预报](https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=702257389,1274025419&fm=27&gp=0.jpg)

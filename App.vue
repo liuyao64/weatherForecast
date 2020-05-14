@@ -5,6 +5,10 @@
 		},
 		onLaunch: function() {
 			console.log('App Launch');
+			wx.cloud.init({
+				env:'weather-3ryse',
+				traceUser: true
+			})
 		},
 		onShow: function() {
 			console.log('App Show');

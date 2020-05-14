@@ -98,6 +98,10 @@ __webpack_require__.r(__webpack_exports__);
 
   onLaunch: function onLaunch() {
     console.log('App Launch');
+    wx.cloud.init({
+      env: 'weather-3ryse',
+      traceUser: true });
+
   },
   onShow: function onShow() {
     console.log('App Show');

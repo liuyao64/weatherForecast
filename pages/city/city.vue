@@ -9,13 +9,23 @@
 			<div class="mg_lt_30 font-30" @click="goBack">取消</div>
 		</div>
 
+		<div class="title flex-row justify-between" v-if="!showSearch&&historyArr.length>0">
+			<div>历史记录</div>
+			<image src="../../static/images/icon/icon-delete.png" mode="" class="icon-delete" @click="clearHistory"></image>
+		</div>
+		<div class="wrap" v-if="!showSearch&&historyArr.length>0">
+			<div class="hot-city" v-for="item in historyArr" @click="chooseHis(item)">
+				{{item.location}}
+			</div>
+		</div>
+
 		<div class="title" v-if="!showSearch">热门城市</div>
 		<div class="wrap" v-if="!showSearch">
-			<div class="hot-city" v-for="item in hotCityArr" @click="chooseHot(item)">
+			<div class="hot-city" v-for="item in hotCityArr" @click="chooseLocation(item)">
 				{{item.location==item.parent_city?item.location:item.location+'，'+item.parent_city}}
 			</div>
 		</div>
-		
+
 		<div class="search-title" v-if="showSearch">全部城市</div>
 		<div class='search' v-if="showSearch">
 			<div class="search-item" v-for="item in cityArr" @click="chooseLocation(item)">
@@ -28,19 +38,68 @@
 
 <script>
 	const app = getApp();
+	const db = wx.cloud.database()
 	export default {
 		data() {
 			return {
 				hotCityArr: [],
 				cityArr: [],
+				historyArr: [],
 				location: '', // 需要查询的城市名称
 				showSearch: false,
 			}
 		},
 		onLoad() {
-			this.getHotCity()
+			this.getHotCity();
+			this.getHistory();
 		},
 		methods: {
+			addHistory(item) {
+				let addObj = {
+					uid: uni.getStorageSync('uid'),
+					location: item.location,
+					lat: item.lat,
+					lng: item.lon
+				}
+				wx.cloud.callFunction({
+					name: 'addHistory',
+					data: {
+						addObj
+					}
+				}).then(res => {
+					console.log('addHistory res:', res)
+				})
+			},
+			getHistory() {
+				let that = this
+				wx.cloud.callFunction({
+					name: 'getHistory',
+					data: {
+						uid: uni.getStorageSync('uid')
+					}
+				}).then(res => {
+					console.log('getHistory', res)
+					that.historyArr = res.result.data
+				})
+			},
+			clearHistory() {
+				let that = this
+				wx.cloud.callFunction({
+					name: 'clearHistory',
+					data: {
+						uid: uni.getStorageSync('uid')
+					}
+				}).then(res => {
+					console.log('clearHistory', res)
+					if(res.result.errMsg == 'collection.remove:ok'){
+						uni.showToast({
+							title:'删除成功',
+							icon:'none'
+						})
+						that.getHistory();
+					}
+				})
+			},
 			getHotCity() {
 				let that = this
 				let url = "https://search.heweather.net/top?group=world&key=" + app.globalData.key
@@ -69,22 +128,23 @@
 				console.log('confirm location:', this.location)
 				this.getCity()
 			},
-			chooseLocation(item){
+			chooseLocation(item) {
 				let that = this
-				let lngLat = item.lon +','+item.lat
-				uni.setStorageSync('lngLat',lngLat)
-				uni.setStorageSync('location',item.location)
+				let lngLat = item.lon + ',' + item.lat
+				uni.setStorageSync('lngLat', lngLat)
+				uni.setStorageSync('location', item.location)
+				this.addHistory(item)
 				uni.navigateBack({
-					delta:1
+					delta: 1
 				})
 			},
-			chooseHot(item){
+			chooseHis(item) {
 				let that = this
-				let lngLat = item.lon +','+item.lat
-				uni.setStorageSync('lngLat',lngLat)
-				uni.setStorageSync('location',item.location)
+				let lngLat = item.lng + ',' + item.lat
+				uni.setStorageSync('lngLat', lngLat)
+				uni.setStorageSync('location', item.location)
 				uni.navigateBack({
-					delta:1
+					delta: 1
 				})
 			},
 			goBack() {
@@ -178,5 +238,10 @@
 		height: 100rpx;
 		line-height: 100rpx;
 		border-bottom: 1rpx solid #fff;
+	}
+
+	.icon-delete {
+		width: 36rpx;
+		height: 36rpx;
 	}
 </style>

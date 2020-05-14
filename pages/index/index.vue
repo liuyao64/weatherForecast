@@ -1,9 +1,13 @@
 <template>
 	<div>
 		<div class="top" v-if="JSON.stringify(weatherInfo)!='{}'">
+			<div class="push-msg" @click="subscribeMsg">
+				<image src="../../static/images/icon/icon-push.png" mode="" class="icon-push"></image>
+				推送天气信息
+			</div>
 			<div class="flex-row center" @click="changeCity">
 				<image src="../../static/images/icon/icon-location-f.png" mode="" class="icon-location"></image>
-				<div class="font-30 font-fff mg_lt_20">
+				<div class="font-30 font-fff mg_lt_20 w-text">
 					{{weatherInfo.basic.location}}
 				</div>
 				<image src="../../static/images/icon/arrow-right.png" mode="" class="icon-arrow mg_lt_10"></image>
@@ -93,6 +97,7 @@
 			} else {
 				// #ifdef MP-WEIXIN
 				this.getLocationWx();
+				this.login();
 				// #endif
 
 				// #ifdef H5
@@ -101,6 +106,14 @@
 			}
 		},
 		methods: {
+			login() {
+				wx.cloud.callFunction({
+					name: 'login',
+				}).then(res => {
+					console.log('login:', res)
+					uni.setStorageSync('uid', res.result)
+				})
+			},
 			iconFilter(data) {
 				console.log(data)
 				switch (data) {
@@ -156,8 +169,8 @@
 					url: url,
 					success(res) {
 						that.weatherInfo = res.data.HeWeather6[0]
-						
-						if(uni.getStorageSync('location')){
+
+						if (uni.getStorageSync('location')) {
 							that.weatherInfo.basic.location = uni.getStorageSync('location')
 						}
 						uni.hideLoading()
@@ -214,21 +227,105 @@
 					url: "../city/city"
 				})
 			},
-			showModal(txt){
+			showModal(txt) {
 				uni.showModal({
-				    title: '温馨提示',
-				    content: txt,
+					title: '温馨提示',
+					content: txt,
 					showCancel: false,
 					confirmText: '知道了',
 					confirmColor: '#7dbbfa',
-				    success: function (res) {
-				    }
+					success: function(res) {}
 				});
-			}
+			},
+			// 订阅消息
+			subscribeMsg() {
+				let that = this
+				let tmplId = 'dj1cnpHivaE8MPHXlbCEnG5iz4-dN-a90xMyU9p-0uY'
+				wx.requestSubscribeMessage({
+					tmplIds: [tmplId],
+					success(res) {
+						if (res[tmplId] == 'accept') {
+							that.cloudSendMsg();
+						} else if (res[tmplId] == 'reject') { // 用户拒绝授权
+							uni.showModal({
+								title: '温馨提示',
+								content: "您已关闭消息推送，如需要消息推送服务，请点击确定跳转设置页面打开授权后再次尝试。",
+								success: function(modal) {
+									if (modal.confirm) { // 点击确定
+										wx.openSetting({
+											withSubscriptions: true,
+										})
+									}
+								}
+							})
+						}
+					},
+					fail(err) {
+						if (err.errCode == '20004') {
+							uni.showModal({
+								title: '温馨提示',
+								content: "您的消息订阅主开关已关闭，如需要消息推送服务，请点击确定跳转设置页面打开授权后再次尝试。",
+								success: function(modal) {
+									if (modal.confirm) { // 点击确定
+										wx.openSetting({
+											withSubscriptions: true,
+										})
+									}
+								}
+							})
+						}
+					}
+				})
+			},
+			getDate(timestamp) {
+				let date = new Date(timestamp)
+				let year = date.getFullYear()
+				let month = date.getMonth() + 1
+				let day = date.getDate()
+				if (month < 10) {
+					month = '0' + month
+				}
+				if (day < 10) {
+					day = '0' + day
+				}
+				return year + '年' + month + '月' + day + '日';
+			},
+			// 云函数-消息推送
+			cloudSendMsg() {
+				let that = this
+				let todayW = this.forecastArr[0]
+				let lifestyle = this.lifestyleArr
+				let tip = ''
+				let fl = this.weatherInfo.now.fl ? '体感温度' + this.weatherInfo.now.fl + '°C，' : ''
+				let comf = ''
+				let flu = ''
+				lifestyle.forEach(item => {
+					if (item.type == 'comf') {
+						comf = item.brf + '，'
+					}
+					if (item.type == 'flu') {
+						flu = '感冒' + item.brf + '。'
+					}
+				})
+				tip = fl + comf + flu
+				wx.cloud.callFunction({
+					name: 'sendMsg',
+					data: {
+						date: that.getDate(new Date().getTime()),
+						location: that.weatherInfo.basic.location,
+						cond_txt: that.weatherInfo.now.cond_txt,
+						tmp: todayW.tmp_min + '~' + todayW.tmp_max + '°C',
+						tip: tip
+					}
+				}).then(res => {
+					console.log('cloud res:', res)
+				}).catch(err => {
+					console.log('err:', err)
+				})
+			},
 		},
 	}
 </script>
-
 <style>
 	page {
 		height: 100%;
@@ -239,6 +336,25 @@
 		padding: 30rpx;
 		font-size: 28rpx;
 		background-color: #7dbbfa;
+		position: relative;
+	}
+
+	.push-msg {
+		position: absolute;
+		top: 20rpx;
+		right: 0;
+		font-size: 28rpx;
+		color: #FFFFFF;
+		background-color: rgba(0, 0, 0, 0.1);
+		padding: 10rpx 15rpx;
+		display: flex;
+		align-items: center;
+	}
+
+	.icon-push {
+		width: 36rpx;
+		height: 36rpx;
+		margin-right: 10rpx;
 	}
 
 	.icon-location {
@@ -249,6 +365,13 @@
 	.icon-arrow {
 		width: 28rpx;
 		height: 28rpx;
+	}
+	
+	.w-text{
+		width: 180rpx;
+		text-align: justify;
+		text-justify: newspaper;
+		word-break: break-all;
 	}
 
 	.weather-box {

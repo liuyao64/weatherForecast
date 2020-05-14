@@ -7,6 +7,27 @@ page {
 	padding: 30rpx;
 	font-size: 28rpx;
 	background-color: #7dbbfa;
+	position: relative;
+}
+.push-msg {
+	position: absolute;
+	top: 20rpx;
+	right: 0;
+	font-size: 28rpx;
+	color: #FFFFFF;
+	background-color: rgba(0, 0, 0, 0.1);
+	padding: 10rpx 15rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.icon-push {
+	width: 36rpx;
+	height: 36rpx;
+	margin-right: 10rpx;
 }
 .icon-location {
 	width: 30rpx;
@@ -15,6 +36,12 @@ page {
 .icon-arrow {
 	width: 28rpx;
 	height: 28rpx;
+}
+.w-text{
+	width: 180rpx;
+	text-align: justify;
+	text-justify: newspaper;
+	word-break: break-all;
 }
 .weather-box {
 	width: 690rpx;

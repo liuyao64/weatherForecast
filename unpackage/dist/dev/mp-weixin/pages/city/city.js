@@ -158,21 +158,80 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-var app = getApp();var _default =
+var app = getApp();
+var db = wx.cloud.database();var _default =
 {
   data: function data() {
     return {
       hotCityArr: [],
       cityArr: [],
+      historyArr: [],
       location: '', // 需要查询的城市名称
       showSearch: false };
 
   },
   onLoad: function onLoad() {
     this.getHotCity();
+    this.getHistory();
   },
   methods: {
+    addHistory: function addHistory(item) {
+      var addObj = {
+        uid: uni.getStorageSync('uid'),
+        location: item.location,
+        lat: item.lat,
+        lng: item.lon };
+
+      wx.cloud.callFunction({
+        name: 'addHistory',
+        data: {
+          addObj: addObj } }).
+
+      then(function (res) {
+        console.log('addHistory res:', res);
+      });
+    },
+    getHistory: function getHistory() {
+      var that = this;
+      wx.cloud.callFunction({
+        name: 'getHistory',
+        data: {
+          uid: uni.getStorageSync('uid') } }).
+
+      then(function (res) {
+        console.log('getHistory', res);
+        that.historyArr = res.result.data;
+      });
+    },
+    clearHistory: function clearHistory() {
+      var that = this;
+      wx.cloud.callFunction({
+        name: 'clearHistory',
+        data: {
+          uid: uni.getStorageSync('uid') } }).
+
+      then(function (res) {
+        console.log('clearHistory', res);
+        if (res.result.errMsg == 'collection.remove:ok') {
+          uni.showToast({
+            title: '删除成功',
+            icon: 'none' });
+
+          that.getHistory();
+        }
+      });
+    },
     getHotCity: function getHotCity() {
       var that = this;
       var url = "https://search.heweather.net/top?group=world&key=" + app.globalData.key;
@@ -206,13 +265,14 @@ var app = getApp();var _default =
       var lngLat = item.lon + ',' + item.lat;
       uni.setStorageSync('lngLat', lngLat);
       uni.setStorageSync('location', item.location);
+      this.addHistory(item);
       uni.navigateBack({
         delta: 1 });
 
     },
-    chooseHot: function chooseHot(item) {
+    chooseHis: function chooseHis(item) {
       var that = this;
-      var lngLat = item.lon + ',' + item.lat;
+      var lngLat = item.lng + ',' + item.lat;
       uni.setStorageSync('lngLat', lngLat);
       uni.setStorageSync('location', item.location);
       uni.navigateBack({
